@@ -1,0 +1,93 @@
+---
+title: "World Development Indicators: Key Insights"
+author: "Nick Richards"
+date: "2/26/2025"
+format:
+  revealjs:
+    transition: fade
+    theme: solarized
+bibliography: references.bib
+---
+
+
+## Introduction
+- This presentation explores **key global development indicators**.
+- Data Source: [World Bank WDI](https://databank.worldbank.org/source/world-development-indicators).
+- Metrics covered:
+  - **GDP per capita**
+  - **Life expectancy**
+  - **Unemployment rate**
+  - **Education expenditure**
+
+## Top 10 Countries by GDP Per Capita
+
+```{python}
+import pandas as pd
+
+df_wdi = pd.read_csv("/Users/nicholasrichards/Desktop/QTM_350/wdi.csv")
+
+table_data = df_wdi[['country', 'gdp_per_capita', 'life_expectancy', 
+                     'education_expenditure_gdp_share', 'unemployment_rate']]\
+                .sort_values(by='gdp_per_capita', ascending=False)\
+                .head(10)
+
+table_data.style.set_caption("Top 10 Countries by GDP per Capita")
+```
+
+
+## GDP vs. Life Expectancy
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df_wdi = pd.read_csv("/Users/nicholasrichards/Desktop/QTM_350/wdi.csv")
+
+plt.figure(figsize=(8,5))
+
+sns.scatterplot(data=df_wdi, x="gdp_per_capita", y="life_expectancy", color="blue", alpha=0.7)
+
+plt.title("GDP per Capita vs. Life Expectancy")
+plt.xlabel("GDP per Capita (USD)")
+plt.ylabel("Life Expectancy (Years)")
+
+plt.show()
+```
+
+
+## Unemployment Rate Distribution
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df_wdi = pd.read_csv("/Users/nicholasrichards/Desktop/QTM_350/wdi.csv")
+
+plt.figure(figsize=(8,5))
+
+sns.histplot(df_wdi["unemployment_rate"], bins=20, color="skyblue", kde=False)
+
+plt.title("Global Unemployment Rate Distribution")
+plt.xlabel("Unemployment Rate (%)")
+plt.ylabel("Count of Countries")
+
+plt.show()
+```
+
+
+## Key Takeaways
+- **Higher GDP per capita** correlates with **higher life expectancy**.
+- Unemployment rates vary widely across countries.
+- Significant disparities exist in global education and health investments.
+
+
+## References
+- Data from @wdi2025.
+- Acemoglu & Johnson (2007): [Life Expectancy and Economic Growth](https://eml.berkeley.edu/~webfac/cromer/e291_f06/Acemoglu.pdf).
+- Preston (2023): [Health & Economic Growth](https://pmc.ncbi.nlm.nih.gov/articles/PMC11066381/).
+
+
+## Conclusion
+**Thank you!**

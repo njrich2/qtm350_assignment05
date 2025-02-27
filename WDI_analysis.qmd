@@ -1,0 +1,118 @@
+---
+title: "World Development Indicators"
+author: "Nick Richards"
+date: "02/26/2025"
+format:
+    html: default
+    pdf: default
+execute:
+    echo: true
+    freeze: auto
+    kernel: python
+    python.reticulate: false
+
+bibliography: references.bib
+---
+
+```{python}
+import pandas as pd
+
+file_path = "/Users/nicholasrichards/Desktop/QTM_350/wdi.csv"
+df_wdi = pd.read_csv(file_path)
+df_wdi.head
+```
+
+```{python}
+print(df_wdi['inflation_rate'].describe())
+print(df_wdi['gdp_per_capita'].describe())
+print(df_wdi['unemployment_rate'].describe())
+```
+
+## Exploratory Data Analysis
+The dataset contains GDP, Population, and Unemployment Rate statistics.
+Below are key statistics:
+- **Inflation Rate**: 
+    count    173.000000
+mean      12.404067
+std       19.467053
+min       -6.687321
+25%        5.518129
+50%        7.930929
+75%       11.665567
+max      171.205491
+dtype: float64
+- **GDP Per Capita**: 
+count       207.000000
+mean      20520.336828
+std       30640.741594
+min         250.634225
+25%        2599.752468
+50%        7606.237525
+75%       27542.145523
+max      226052.001905
+dtype: float64
+- **Unemployment Rate**:
+count    186.000000
+mean       7.227344
+std        5.844462
+min        0.130000
+25%        3.478000
+50%        5.334000
+75%        9.261750
+max       35.359000
+dtype: float64
+
+
+```{python, echo=FALSE}
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8,5))
+plt.scatter(df_wdi['gdp_per_capita'], df_wdi['unemployment_rate'])
+plt.title("GDP vs. Unemployment Rate")
+plt.xlabel("GDP")
+plt.ylabel("Unemployment Rate")
+plt.show()
+```
+
+```{python, echo=FALSE}
+top_countries = df_wdi.sort_values(by="gdp_per_capita", ascending=False).head(10)
+
+plt.figure(figsize=(10,5))
+plt.bar(top_countries['country'], top_countries['gdp_per_capita'], color='royalblue')
+plt.title("Top 10 Countries by GDP")
+plt.xlabel("Country")
+plt.ylabel("GDP (in billion USD)")
+plt.xticks(rotation=45)
+plt.show()
+```
+
+See Figure @fig-gdp-unemployment for the GDP vs. Unemployment Rate scatter plot.
+Figure @fig-top-gdp shows the GDP of the top 10 countries.
+
+![GDP vs. Unemployment](gdp_vs_unemployment.png){#fig-gdp-unemployment}
+![Top 10 Countries by GDP](top_gdp_chart.png){#fig-top-gdp}
+
+```{python}
+import pandas as pd
+
+df_wdi = pd.read_csv("/Users/nicholasrichards/Desktop/QTM_350/wdi.csv")
+
+table_data = df_wdi[['country', 'gdp_per_capita', 'life_expectancy', 
+                     'education_expenditure_gdp_share', 'unemployment_rate']]\
+                .sort_values(by='gdp_per_capita', ascending=False)\
+                .head(10)
+
+table_data.style.set_caption("Top 10 Countries by GDP per Capita")
+```
+
+```
+
+
+See Table @tbl-summary for an overview.
+Figure @fig-gdp-unemployment shows the GDP-Unemployment relation.
+
+Previous research indicates a complex relationship between life expectancy and economic growth. Acemoglu and Johnson (2007) found that increases in life expectancy have a nuanced impact on GDP growth :contentReference[oaicite:2]{index=2}. Similarly, Preston (2023) highlighted the nonlinear effects of health improvements on economic performance :contentReference[oaicite:3]{index=3}.
+
+
+
+
